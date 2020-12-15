@@ -61,10 +61,12 @@
  make-backup-files                  t
  auto-save-default                  t
  auto-save-list-file-name           (concat temp-dir "/autosave")
- make-backup-files                  t
  create-lockfiles                   nil
  backup-directory-alist            `((".*" . ,(concat temp-dir "/backup/")))
  auto-save-file-name-transforms    `((".*" ,(concat temp-dir "/auto-save-list/") t)))
+
+(unless (file-exists-p (concat temp-dir "/auto-save-list"))
+		       (make-directory (concat temp-dir "/auto-save-list") :parents))
 
 (fset 'yes-or-no-p 'y-or-n-p)
 (global-auto-revert-mode t)
@@ -77,6 +79,10 @@
   (scroll-bar-mode -1))
 
 (show-paren-mode 1)
+
+;; Need to load custom file to avoid being overwritten
+;; more at https://www.gnu.org/software/emacs/manual/html_node/emacs/Saving-Customizations.html
+(load custom-file)
 
 ;; Delete trailing whitespace before save
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
